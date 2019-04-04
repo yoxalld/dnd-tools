@@ -1,0 +1,34 @@
+.creature {
+  margin-bottom: 2rem;
+}
+.creature > .card-body > .card-deck > .card {
+  margin-right: 10px;
+  margin-left: 10px;
+}
+.creature > .card-body > .card-title {
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+  font-size: 1.5rem;
+  text-align: left;
+}
+.creature .card-deck {
+  margin-bottom: 2rem;
+}
+.creature .card-deck:last-child {
+  margin-bottom: 0;
+}
+.stat .card-header {
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+.stat .card-title {
+  padding: 1rem 0.5rem;
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+}
+.long-stats .stat .card-title {
+  font-size: 1rem;
+  text-align: left;
+  padding: 1.5rem;
+}
