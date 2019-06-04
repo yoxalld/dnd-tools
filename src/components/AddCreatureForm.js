@@ -1,7 +1,25 @@
 import React from "react";
+import { connect } from "react-redux";
+import { addCreature } from "../actions/creature";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
+
+const mapState = state => {
+  const {
+    modal: { modalOpen, modalContent }
+  } = state;
+  return { modalOpen, modalContent };
+};
+const mapDispatch = dispatch => {
+  return {
+    addCreature: creature => dispatch(addCreature(creature))
+  };
+};
+const componentConnector = connect(
+  mapState,
+  mapDispatch
+);
 
 class AddCreatureForm extends React.Component {
   nameRef = React.createRef();
@@ -99,27 +117,6 @@ class AddCreatureForm extends React.Component {
             placeholder="Immunities"
           />
         </Form.Group>
-        <Form.Row>
-          <Form.Group as={Col} sm={6}>
-            {this.props.conditions.map(condition => (
-              <Form.Check
-                type="checkbox"
-                key={condition.name}
-                label={condition.name}
-              />
-            ))}
-          </Form.Group>
-          <Form.Group as={Col} sm={6}>
-            {this.props.damageTypes.map(damageType => (
-              <Form.Check
-                type="checkbox"
-                key={damageType.name}
-                label={damageType.name}
-                inline={true}
-              />
-            ))}
-          </Form.Group>
-        </Form.Row>
         <Button variant="primary" type="submit">
           Add Creature
         </Button>
@@ -128,4 +125,4 @@ class AddCreatureForm extends React.Component {
   }
 }
 
-export default AddCreatureForm;
+export default componentConnector(AddCreatureForm);

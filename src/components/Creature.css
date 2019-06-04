@@ -1,5 +1,8 @@
+/* Colors #6a431e, #ddd9b2, #f0d47d, #7a2e25, #190702, #0f0e0a  */
 .creature {
   margin-bottom: 2rem;
+  background: #ddd9b2 !important;
+  border-color: #6a431e;
 }
 .creature > .card-body > .card-deck > .card {
   margin-right: 10px;
@@ -11,6 +14,15 @@
   font-size: 1.5rem;
   text-align: left;
 }
+
+.card {
+  border-color: #6a431e !important;
+}
+
+.creature .card {
+  background: none !important;
+  border-color: #6a431e !important;
+}
 .creature .card-deck {
   margin-bottom: 2rem;
 }
@@ -20,12 +32,14 @@
 .stat .card-header {
   margin-bottom: 0.5rem;
   font-size: 1rem;
+  border-color: #7a2e25 !important;
 }
 .stat .card-title {
   padding: 1rem 0.5rem;
   font-size: 2rem;
   font-weight: bold;
   text-align: center;
+  background: none !important;
 }
 .long-stats .stat .card-title {
   font-size: 1rem;

@@ -6,51 +6,59 @@ import "rpg-awesome/css/rpg-awesome.min.css";
 import "./Creature.css";
 
 class Creature extends Component {
+  state = {
+    status: "",
+    bkg: ""
+  };
   render() {
     const {
       armorClass,
       hitPoints,
-      immunities,
       initiative,
       name,
-      resistances,
       temporaryHitPoints
+      //immunities,
+      //resistances,
     } = this.props.stats;
     return (
       <Col sm={6} md={3}>
-        <Card className="creature">
+        <Card className="creature" /* bg={this.state.bkg} */>
           <Card.Body>
             <Card.Title>{name}</Card.Title>
             <CardDeck>
               <Card className="stat">
-                <Card.Header>Init</Card.Header>
-                <Card.Title>{initiative}</Card.Title>
-              </Card>
-              <Card className="stat">
-                <Card.Header>AC</Card.Header>
+                <Card.Header className="text-center">AC</Card.Header>
                 <Card.Title>{armorClass}</Card.Title>
               </Card>
             </CardDeck>
             <CardDeck>
               <Card className="stat">
-                <Card.Header>HP</Card.Header>
+                <Card.Header className="text-center">Init</Card.Header>
+                <Card.Title>{initiative}</Card.Title>
+              </Card>
+              <Card className="stat">
+                <Card.Header className="text-center">HP</Card.Header>
                 <Card.Title>{hitPoints}</Card.Title>
               </Card>
-              <Card className="stat">
-                <Card.Header>Temp HP</Card.Header>
-                <Card.Title>{temporaryHitPoints}</Card.Title>
-              </Card>
             </CardDeck>
-            <CardDeck className="long-stats">
+            {temporaryHitPoints > 0 && ( // this conditionally displays the Temp HP if there is any (https://reactjs.org/docs/conditional-rendering.html)
+              <CardDeck>
+                <Card className="stat">
+                  <Card.Header className="text-center">Temp HP</Card.Header>
+                  <Card.Title>{temporaryHitPoints}</Card.Title>
+                </Card>
+              </CardDeck>
+            )}
+            {/* <CardDeck className="long-stats">
               <Card className="stat">
-                <Card.Header>Resist</Card.Header>
+                <Card.Header className="text-center">Resist</Card.Header>
                 <Card.Title>{resistances}</Card.Title>
               </Card>
               <Card className="stat">
-                <Card.Header>Immune</Card.Header>
+                <Card.Header className="text-center">Immune</Card.Header>
                 <Card.Title>{immunities}</Card.Title>
               </Card>
-            </CardDeck>
+            </CardDeck> */}
           </Card.Body>
         </Card>
       </Col>

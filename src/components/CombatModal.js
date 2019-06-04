@@ -1,23 +1,32 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { closeModal } from "../actions/modal";
 import Modal from "react-bootstrap/Modal";
 import AddCreatureForm from "./AddCreatureForm";
-import Legend from "./Legend";
+
+const mapState = state => {
+  const {
+    modal: { modalOpen, modalContent }
+  } = state;
+  return { modalOpen, modalContent };
+};
+const mapDispatch = dispatch => {
+  return {
+    closeModal: () => dispatch(closeModal())
+  };
+};
+const componentConnector = connect(
+  mapState,
+  mapDispatch
+);
 
 class CombatModal extends Component {
   handleModalContent = () => {
     switch (this.props.modalContent) {
       case "add-creature":
-        return (
-          <AddCreatureForm
-            addCreature={this.props.addCreature}
-            conditions={this.props.conditions}
-            damageTypes={this.props.damageTypes}
-          />
-        );
+        return <AddCreatureForm />;
       case "load-creature":
         return "";
-      case "legend":
-        return <Legend />;
       default:
         return null;
     }
@@ -38,7 +47,7 @@ class CombatModal extends Component {
     return (
       <Modal
         show={this.props.modalOpen}
-        onHide={this.props.handleModal}
+        onHide={this.props.closeModal}
         className="combat-modal"
         size="lg"
       >
@@ -51,4 +60,4 @@ class CombatModal extends Component {
   }
 }
 
-export default CombatModal;
+export default componentConnector(CombatModal);

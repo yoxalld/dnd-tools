@@ -1,182 +1,79 @@
 import React, { Component } from "react";
 import "./App.css";
 import Tracker from "./components/Tracker";
-import Header from "./components/Header";
 import CombatTools from "./components/CombatTools";
-import sampleCreatures from "./utils/sampleCreatures";
-
+import CombatModal from "./components/CombatModal";
+import { connect } from "react-redux";
+import { closeModal } from "./actions/modal";
+import { setSiteId } from "./actions/stats";
+import Container from "react-bootstrap/Container";
+/* import { getRandomInt } from "./utils/utilityFunctions";
+import base from "./base";
+import sampleCreatures from "./utils/sampleCreatures"; */
 /* 
   Possible API to use later on http://www.dnd5eapi.co/
 */
+const mapState = state => {
+  const {
+    modal: { modalOpen, modalContent },
+    stats
+  } = state;
+  return { modalOpen, modalContent, stats };
+};
+const mapDispatch = dispatch => {
+  return {
+    closeModal: () => dispatch(closeModal()),
+    setSiteId: siteId => dispatch(setSiteId(siteId))
+  };
+};
+const componentConnector = connect(
+  mapState,
+  mapDispatch
+);
 
 class App extends Component {
-  state = {
-    modalOpen: false,
-    modalContent: "",
-    creatures: {}
-  };
-  conditions = [
-    {
-      name: "Blinded",
-      icon: ""
-    },
-    {
-      name: "Charmed",
-      icon: ""
-    },
-    {
-      name: "Deafened",
-      icon: ""
-    },
-    {
-      name: "Frightened",
-      icon: ""
-    },
-    {
-      name: "Grappled",
-      icon: ""
-    },
-    {
-      name: "Incapacitated",
-      icon: ""
-    },
-    {
-      name: "Invisible",
-      icon: ""
-    },
-    {
-      name: "Paralyzed",
-      icon: ""
-    },
-    {
-      name: "Petrified",
-      icon: ""
-    },
-    {
-      name: "Poisoned",
-      icon: ""
-    },
-    {
-      name: "Prone",
-      icon: ""
-    },
-    {
-      name: "Restrained",
-      icon: ""
-    },
-    {
-      name: "Stunned",
-      icon: ""
-    },
-    {
-      name: "Unconscious",
-      icon: ""
-    }
-  ];
-  damageTypes = [
-    {
-      name: "Acid",
-      icon: ""
-    },
-    {
-      name: "Bludgeoning",
-      icon: ""
-    },
-    {
-      name: "Cold",
-      icon: ""
-    },
-    {
-      name: "Fire",
-      icon: ""
-    },
-    {
-      name: "Force",
-      icon: ""
-    },
-    {
-      name: "Lightning",
-      icon: ""
-    },
-    {
-      name: "Necrotic",
-      icon: ""
-    },
-    {
-      name: "Piercing",
-      icon: ""
-    },
-    {
-      name: "Poison",
-      icon: ""
-    },
-    {
-      name: "Psychic",
-      icon: ""
-    },
-    {
-      name: "Radiant",
-      icon: ""
-    },
-    {
-      name: "Slashing",
-      icon: ""
-    },
-    {
-      name: "Thunder",
-      icon: ""
-    }
-  ];
-  handleModal = event => {
-    if (
-      typeof event !== "undefined" &&
-      event.target.attributes.modalvariant.value.length
-    ) {
-      this.setState({
-        modalOpen: true,
-        modalContent: event.target.attributes.modalvariant.value
-      });
-    } else {
-      // If there is no event then it's a close button click for some reason, something to do with Bootstrap
-      this.setState({ modalOpen: false });
-    }
-  };
-
-  addCreature = creature => {
-    const creatures = { ...this.state.creatures };
-    creatures[`creature${Date.now()}`] = creature;
-    this.setState({
-      creatures
-    });
-  };
+  componentDidMount() {
+    this.props.setSiteId(this.props.match.params.siteId);
+    /* This is for firebase
+      this.ref = base.syncState(
+      `${this.props.match.params.siteId}/creatures`,
+      {
+        context: this,
+        state: "creatures"
+      }
+    ); */
+  }
+  /*
+  componentWillUnmount() {
+    console.log("unmount");
+    base.removeBinding(this.ref);
+  }
 
   loadSampleCreatures = () => {
-    this.setState({ creatures: sampleCreatures });
-  };
+    const creatures = { ...this.state.creatures };
+    Object.keys(sampleCreatures).forEach(key => {
+      const uniqueKey = `creature${getRandomInt(99999)}${Date.now()}`;
+      // We need to set current creature to LET so we can modify it before we add it to our creautres object.
+      let creature = sampleCreatures[key];
+      creature.uniqueKey = uniqueKey;
+      // Add updated creature object to creatures
+      creatures[uniqueKey] = creature;
+      //creatures[`creature${key}${Date.now()}`] = sampleCreatures[key];
+    });
+    this.setState({ creatures });
+  }; */
 
   render() {
     return (
       <div className="App">
-        <link
-          rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
-          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
-          crossOrigin="anonymous"
-        />
-        <Header />
-        <CombatTools
-          loadSampleCreatures={this.loadSampleCreatures}
-          handleModal={this.handleModal}
-          modalOpen={this.state.modalOpen}
-          modalContent={this.state.modalContent}
-          addCreature={this.addCreature}
-          conditions={this.conditions}
-          damageTypes={this.damageTypes}
-        />
-        <Tracker creatures={this.state.creatures} />
-      </div> // App
+        <Container fluid={true}>
+          <CombatTools />
+          <Tracker />
+          <CombatModal />
+        </Container>
+      </div>
     );
   }
 }
 
-export default App;
+export default componentConnector(App);

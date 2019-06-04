@@ -1,57 +1,97 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { startCombat, endCombat, advanceTurn } from "../actions/settings";
+import { openModal, closeModal } from "../actions/modal";
 import ButtonToolbar from "react-bootstrap/ButtonToolbar";
 import Button from "react-bootstrap/Button";
-import CombatModal from "./CombatModal";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+//import Badge from "react-bootstrap/Badge";
+//import CombatModal from "./CombatModal";
+
+// Maps state to props for redux
+const mapState = state => {
+  const {
+    combat: { combatStarted },
+    modal: { modalOpen, modalContent }
+  } = state;
+  return { combatStarted, modalOpen, modalContent };
+};
+// Maps dispatch action creators to props to more cleanly be able to use them
+const mapDispatch = dispatch => {
+  return {
+    startCombat: () => dispatch(startCombat()),
+    endCombat: () => dispatch(endCombat()),
+    advanceTurn: () => dispatch(advanceTurn()),
+    openModal: content => dispatch(openModal(content)),
+    closeModal: () => dispatch(closeModal())
+  };
+};
+// this connects the component to the redux store, notice the default export at the bottom of the page
+const componentConnector = connect(
+  mapState,
+  mapDispatch
+);
 
 class CombatTools extends Component {
+  handleModal = e => {
+    this.props.openModal(e.target.attributes.modalcontent.value);
+  };
   render() {
     return (
-      <ButtonToolbar className="combat-tools justify-content-center p-5">
-        <Button
-          variant="outline-primary"
-          className="mx-1"
-          modalvariant="add-creature"
-          onClick={this.props.handleModal}
-        >
-          Add New Creature
-        </Button>
-        <Button
-          variant="outline-primary"
-          className="mx-1"
-          modalvariant="load-creature"
-          onClick={this.props.handleModal}
-        >
-          Load Creature
-        </Button>
-        <Button
-          variant="outline-primary"
-          className="mx-1"
-          modalvariant="legend"
-          onClick={this.props.handleModal}
-        >
-          Legend
-        </Button>
-        <Button variant="outline-primary" className="mx-1">
-          Advance Turn
-        </Button>
-        <Button
-          variant="outline-primary"
-          className="mx-1"
-          onClick={this.props.loadSampleCreatures}
-        >
-          Load Sample Creatures
-        </Button>
-        <CombatModal
-          modalOpen={this.props.modalOpen}
-          modalContent={this.props.modalContent}
-          handleModal={this.props.handleModal}
-          addCreature={this.props.addCreature}
-          conditions={this.props.conditions}
-          damageTypes={this.props.damageTypes}
-        />
-      </ButtonToolbar>
+      <Row className="py-3">
+        <Col>
+          <ButtonToolbar className="combat-tools">
+            {/* <Button
+              variant="outline-primary"
+              className="mx-1"
+              onClick={this.props.loadSampleCreatures}
+            >
+              Load Sample Creatures
+            </Button> */}
+
+            <Button
+              variant="outline-primary"
+              className="mx-1"
+              modalcontent="add-creature"
+              onClick={this.handleModal}
+            >
+              Add New Creature
+            </Button>
+            {!this.props.combatStarted && (
+              <Button
+                variant="outline-primary"
+                className="mx-1"
+                event="Combat Start"
+                onClick={this.props.startCombat}
+              >
+                Start Combat
+              </Button>
+            )}
+            {this.props.combatStarted && (
+              <>
+                <Button
+                  variant="outline-primary"
+                  className="mx-1"
+                  onClick={this.props.advanceTurn}
+                >
+                  Advance Turn
+                </Button>
+                <Button
+                  variant="outline-primary"
+                  className="mx-1"
+                  event="Combat End"
+                  onClick={this.props.endCombat}
+                >
+                  End Combat
+                </Button>
+              </>
+            )}
+          </ButtonToolbar>
+        </Col>
+      </Row>
     );
   }
 }
 
-export default CombatTools;
+export default componentConnector(CombatTools);
