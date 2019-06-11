@@ -6,10 +6,6 @@ import "rpg-awesome/css/rpg-awesome.min.css";
 import "./Creature.css";
 
 class Creature extends Component {
-  state = {
-    status: "",
-    bkg: ""
-  };
   render() {
     const {
       armorClass,

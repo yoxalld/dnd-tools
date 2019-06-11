@@ -20,24 +20,6 @@ const componentConnector = connect(
 );
 
 class Tracker extends Component {
-  componentDidMount() {
-    console.log("Tracker Mounted");
-    console.log(this.props.stats);
-    const localCreatures = JSON.parse(
-      localStorage.getItem(this.props.stats.siteId)
-    );
-    console.log("Local Creatures", localCreatures);
-    if (localCreatures) {
-      this.loadCreatures(localCreatures);
-    }
-  }
-  componentDidUpdate() {
-    console.log("Tracker Updated");
-    /* localStorage.setItem(
-      this.props.stats.siteId,
-      JSON.stringify(this.props.creatures.creatures)
-    ); */
-  }
   render() {
     if (!this.props.creatures.creatures) return null;
     return (

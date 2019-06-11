@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import { closeModal } from "./actions/modal";
 import { setSiteId } from "./actions/stats";
 import Container from "react-bootstrap/Container";
+import CombatStats from "./components/CombatStats";
 /* import { getRandomInt } from "./utils/utilityFunctions";
 import base from "./base";
 import sampleCreatures from "./utils/sampleCreatures"; */
@@ -34,39 +35,13 @@ const componentConnector = connect(
 class App extends Component {
   componentDidMount() {
     this.props.setSiteId(this.props.match.params.siteId);
-    /* This is for firebase
-      this.ref = base.syncState(
-      `${this.props.match.params.siteId}/creatures`,
-      {
-        context: this,
-        state: "creatures"
-      }
-    ); */
   }
-  /*
-  componentWillUnmount() {
-    console.log("unmount");
-    base.removeBinding(this.ref);
-  }
-
-  loadSampleCreatures = () => {
-    const creatures = { ...this.state.creatures };
-    Object.keys(sampleCreatures).forEach(key => {
-      const uniqueKey = `creature${getRandomInt(99999)}${Date.now()}`;
-      // We need to set current creature to LET so we can modify it before we add it to our creautres object.
-      let creature = sampleCreatures[key];
-      creature.uniqueKey = uniqueKey;
-      // Add updated creature object to creatures
-      creatures[uniqueKey] = creature;
-      //creatures[`creature${key}${Date.now()}`] = sampleCreatures[key];
-    });
-    this.setState({ creatures });
-  }; */
 
   render() {
     return (
       <div className="App">
-        <Container fluid={true}>
+        <Container fluid={true} className="py-3">
+          <CombatStats />
           <CombatTools />
           <Tracker />
           <CombatModal />

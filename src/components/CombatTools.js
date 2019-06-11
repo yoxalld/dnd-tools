@@ -1,6 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { startCombat, endCombat, advanceTurn } from "../actions/settings";
+import {
+  startCombat,
+  endCombat,
+  advanceTurn,
+  updateActiveCreature
+} from "../actions/combat";
 import { openModal, closeModal } from "../actions/modal";
 import ButtonToolbar from "react-bootstrap/ButtonToolbar";
 import Button from "react-bootstrap/Button";
@@ -24,7 +29,8 @@ const mapDispatch = dispatch => {
     endCombat: () => dispatch(endCombat()),
     advanceTurn: () => dispatch(advanceTurn()),
     openModal: content => dispatch(openModal(content)),
-    closeModal: () => dispatch(closeModal())
+    closeModal: () => dispatch(closeModal()),
+    updateActiveCreature: () => dispatch(updateActiveCreature())
   };
 };
 // this connects the component to the redux store, notice the default export at the bottom of the page
@@ -36,6 +42,11 @@ const componentConnector = connect(
 class CombatTools extends Component {
   handleModal = e => {
     this.props.openModal(e.target.attributes.modalcontent.value);
+  };
+  handleStartCombat = e => {
+    e.preventDefault();
+    this.props.startCombat();
+    this.props.updateActiveCreature();
   };
   render() {
     return (
@@ -63,7 +74,7 @@ class CombatTools extends Component {
                 variant="outline-primary"
                 className="mx-1"
                 event="Combat Start"
-                onClick={this.props.startCombat}
+                onClick={this.handleStartCombat}
               >
                 Start Combat
               </Button>

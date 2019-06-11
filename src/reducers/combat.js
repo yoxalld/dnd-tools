@@ -2,11 +2,13 @@ import {
   START_COMBAT,
   PAUSE_COMBAT,
   ADVANCE_TURN,
-  END_COMBAT
+  END_COMBAT,
+  UPDATE_ACTIVE_CREATURE
 } from "../actions/types";
 const DEFAULT_COMBAT = {
   combatStarted: false,
   combatPaused: false,
+  activeCreature: "",
   turnCount: 0,
   roundCount: 0
 };
@@ -36,6 +38,11 @@ const combatReducer = (state = DEFAULT_COMBAT, action) => {
       return {
         ...state,
         turnCount: newTurn
+      };
+    case UPDATE_ACTIVE_CREATURE:
+      console.log(state);
+      return {
+        ...state
       };
     default:
       return state;

@@ -9,3 +9,4 @@ export const OPEN_MODAL = "OPEN_MODAL";
 export const CLOSE_MODAL = "CLOSE_MODAL";
 export const SET_SITE_ID = "SET_SITE_ID";
 export const LOAD_CREATURES = "LOAD_CREATURES";
+export const UPDATE_ACTIVE_CREATURE = "UPDATE_ACTIVE_CREATURE";
